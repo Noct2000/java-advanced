@@ -1,8 +1,8 @@
 package kvasha.university.java.advanced.controller;
 
-import kvasha.university.java.advanced.mapper.ProductMapper;
-import kvasha.university.java.advanced.model.dto.ExternalSearchResponseDto;
-import kvasha.university.java.advanced.servise.RozetkaSearchFeignClient;
+import java.util.List;
+import kvasha.university.java.advanced.model.Product;
+import kvasha.university.java.advanced.service.ProductService;
 import lombok.RequiredArgsConstructor;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
@@ -13,11 +13,10 @@ import org.springframework.web.bind.annotation.RestController;
 @RequestMapping("/external-api")
 @RequiredArgsConstructor
 public class ExternalApiController {
-    private final ProductMapper productMapper;
-    private final RozetkaSearchFeignClient rozetkaSearchFeignClient;
+    private final ProductService productService;
 
     @PostMapping("/sync-products")
-    public ExternalSearchResponseDto syncGoods(@RequestBody String externalEndpoint) {
-        return rozetkaSearchFeignClient.searchProduct("notekia+flip", 1);
+    public List<Product> syncGoods(@RequestBody String searchRequest) {
+        return productService.getProductsFromApi(searchRequest);
     }
 }

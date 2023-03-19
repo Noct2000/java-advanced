@@ -5,7 +5,7 @@
     <parent>
         <groupId>org.springframework.boot</groupId>
         <artifactId>spring-boot-starter-parent</artifactId>
-        <version>2.7.10-SNAPSHOT</version>
+        <version>2.5.9</version>
         <relativePath/>
     </parent>
     <groupId>kvasha.university</groupId>
@@ -18,7 +18,9 @@
         <maven.checkstyle.plugin.configLocation>
             checkstyle.xml
         </maven.checkstyle.plugin.configLocation>
+        <org.springframework.cloud.version>3.0.3</org.springframework.cloud.version>
     </properties>
+
     <dependencies>
         <!--switch on when it will be needed-->
 <!--        <dependency>-->
@@ -57,9 +59,9 @@
             <scope>test</scope>
         </dependency>
         <dependency>
-            <groupId>org.jsoup</groupId>
-            <artifactId>jsoup</artifactId>
-            <version>1.11.3</version>
+            <groupId>org.springframework.cloud</groupId>
+            <artifactId>spring-cloud-starter-openfeign</artifactId>
+            <version>${org.springframework.cloud.version}</version>
         </dependency>
     </dependencies>
 

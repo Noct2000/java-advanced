@@ -9,11 +9,12 @@ import kvasha.university.java.advanced.model.dto.ExternalSearchResponseDto;
 import kvasha.university.java.advanced.service.ProductService;
 import kvasha.university.java.advanced.service.RozetkaSearchFeignClient;
 import lombok.RequiredArgsConstructor;
-import lombok.SneakyThrows;
+import lombok.extern.log4j.Log4j2;
 import org.springframework.stereotype.Service;
 
 @Service
 @RequiredArgsConstructor
+@Log4j2
 public class ProductServiceImpl implements ProductService {
     private static final int START_PAGE_NUMBER = 1;
 
@@ -35,13 +36,15 @@ public class ProductServiceImpl implements ProductService {
         return products;
     }
 
-    private void mapProducts(ExternalSearchResponseDto externalSearchResponseDto, List<Product> products) {
+    private void mapProducts(
+            ExternalSearchResponseDto externalSearchResponseDto,
+            List<Product> products
+    ) {
         for (ExternalProductDto productDto : externalSearchResponseDto.getData().getGoods()) {
             products.add(productMapper.toModel(productDto));
         }
     }
 
-    @SneakyThrows
     private void fetchProducts(
             List<Product> products,
             Integer totalPages,
@@ -51,6 +54,8 @@ public class ProductServiceImpl implements ProductService {
             ExternalSearchResponseDto externalSearchResponseDto = rozetkaSearchFeignClient
                     .searchProduct(clearSearchRequest, page);
             mapProducts(externalSearchResponseDto, products);
+            log.info("page={}", page);
+
         }
     }
 }

@@ -8,7 +8,61 @@
     <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0-alpha2/dist/css/bootstrap.min.css" rel="stylesheet" integrity="sha384-aFq/bzH65dt+w6FI2ooMVUpc+21e0SRygnTpmBvdBgSdnuTN7QbdgL+OapgHtvPp" crossorigin="anonymous">
 </head>
 <body>
-<h1>Hello, world!</h1>
+<div class="container">
+    <div class="row justify-content-center">
+        <div class="col-md-6">
+            <form class="form-inline my-2 my-lg-0" id="searchForm">
+                <label class="sr-only" for="searchField">Search goods on Rozetka</label>
+                <div class="input-group input-group-sm">
+                    <input class="form-control" type="text" id="searchField" name="searchField" placeholder="Search..." aria-label="Search">
+                    <div class="input-group-append">
+                        <button class="btn btn-primary" type="submit" id="searchButton">GO!</button>
+                    </div>
+                </div>
+            </form>
+            <div class="text-center mt-3 d-none" id="searchSpinner">
+                <div class="spinner-border text-primary" role="status">
+                    <span class="visually-hidden">Loading...</span>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+<script>
+    const searchForm = document.getElementById("searchForm");
+    const searchField = document.getElementById("searchField");
+    const searchButton = document.getElementById("searchButton");
+    const searchSpinner = document.getElementById("searchSpinner");
+
+    searchForm.addEventListener("submit", (event) => {
+        event.preventDefault();
+        searchSpinner.classList.remove("d-none");
+        searchField.disabled = true;
+        searchButton.disabled = true;
+
+        const searchRequest = searchField.value;
+
+        fetch("/external-api/sync-products", {
+            method: "POST",
+            headers: {
+                "Content-Type": "text/plain",
+            },
+            body: searchRequest,
+        })
+            .then((response) => response.json())
+            .then((data) => {
+                console.log(data);
+                // do something with the response data
+            })
+            .catch((error) => console.error(error))
+            .finally(() => {
+                searchSpinner.classList.add("d-none");
+                searchField.disabled = false;
+                searchButton.disabled = false;
+            });
+    });
+</script>
 <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0-alpha2/dist/js/bootstrap.bundle.min.js" integrity="sha384-qKXV1j0HvMUeCBQ+QVp7JcfGl760yU08IQ+GpUo5hlbpg51QRiuqHAJz8+BrxE/N" crossorigin="anonymous"></script>
 </body>
 </html>

@@ -54,7 +54,7 @@ public class ProductServiceImpl implements ProductService {
             ExternalSearchResponseDto externalSearchResponseDto = rozetkaSearchFeignClient
                     .searchProduct(clearSearchRequest, page);
             mapProducts(externalSearchResponseDto, products);
-            log.info("page={}", page);
+            log.info("page={}/{}", page, totalPages);
 
         }
     }

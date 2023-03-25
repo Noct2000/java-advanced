@@ -2,6 +2,7 @@ package kvasha.university.java.advanced.controller;
 
 import java.util.List;
 import kvasha.university.java.advanced.model.Product;
+import kvasha.university.java.advanced.model.dto.ProductResponseDto;
 import kvasha.university.java.advanced.service.ProductService;
 import lombok.RequiredArgsConstructor;
 import org.springframework.web.bind.annotation.PostMapping;
@@ -16,7 +17,18 @@ public class ExternalApiController {
     private final ProductService productService;
 
     @PostMapping("/sync-products")
-    public List<Product> syncGoods(@RequestBody String searchRequest) {
-        return productService.getProductsFromApi(searchRequest);
+    public List<ProductResponseDto> syncGoods(@RequestBody String searchRequest) {
+        List<Product> productsFromApi = productService.getProductsFromApi(searchRequest);
+        productService.saveProducts(productsFromApi);
+        return productsFromApi
+                .stream()
+                .map(p -> new ProductResponseDto(
+                        p.getTitle(),
+                        p.getImgLink(),
+                        p.getDirectLink(),
+                        p.getDescription(),
+                        p.getExternalId(),
+                        p.getPrice()
+                )).toList();
     }
 }

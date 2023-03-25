@@ -6,6 +6,7 @@ import kvasha.university.java.advanced.mapper.ProductMapper;
 import kvasha.university.java.advanced.model.Product;
 import kvasha.university.java.advanced.model.dto.ExternalProductDto;
 import kvasha.university.java.advanced.model.dto.ExternalSearchResponseDto;
+import kvasha.university.java.advanced.repository.ProductRepository;
 import kvasha.university.java.advanced.service.ProductService;
 import kvasha.university.java.advanced.service.RozetkaSearchFeignClient;
 import lombok.RequiredArgsConstructor;
@@ -20,6 +21,7 @@ public class ProductServiceImpl implements ProductService {
 
     private final RozetkaSearchFeignClient rozetkaSearchFeignClient;
     private final ProductMapper productMapper;
+    private final ProductRepository productRepository;
 
     @Override
     public List<Product> getProductsFromApi(String searchRequest) {
@@ -28,12 +30,16 @@ public class ProductServiceImpl implements ProductService {
                 .searchProduct(searchRequest, START_PAGE_NUMBER);
         List<Product> products = new ArrayList<>();
         mapProducts(externalSearchResponseDto, products);
-
         fetchProducts(
                 products,
                 externalSearchResponseDto.getData().getPagination().getTotalPages(),
                 clearSearchRequest);
         return products;
+    }
+
+    @Override
+    public List<Product> saveProducts(List<Product> products) {
+        return products.stream().map(productRepository::save).toList();
     }
 
     private void mapProducts(

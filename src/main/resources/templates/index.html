@@ -22,6 +22,7 @@
             </form>
             <div class="input-group-append">
                 <button class="btn btn-primary" disabled id="downloadWorkbookButton">Download xlsx</button>
+                <button class="btn btn-primary" disabled id="clearDbButton">Clear DB</button>
             </div>
             <div class="text-center mt-3 d-none" id="searchSpinner">
                 <div class="spinner-border text-primary" role="status">
@@ -38,10 +39,12 @@
     const searchButton = document.getElementById("searchButton");
     const searchSpinner = document.getElementById("searchSpinner");
     const downloadButton = document.getElementById("downloadWorkbookButton");
+    const clearDbButton = document.getElementById("clearDbButton");
 
     downloadButton.onclick = function () {
         window.location.href = "/workbooks";
     };
+    clearDbButton.onclick = clearDB;
 
     searchForm.addEventListener("submit", (event) => {
         event.preventDefault();
@@ -75,7 +78,20 @@
         })
             .then((response) => response.json())
             .then((data) => {
-                downloadButton.disabled = +data === 0;
+                const disabled = +data === 0;
+
+                downloadButton.disabled = disabled;
+                clearDbButton.disabled = disabled;
+            })
+            .catch((error) => console.error(error));
+    }
+    function clearDB() {
+        fetch("/products", {
+            method: "DELETE",
+        })
+            .then(() => {
+                alert("you cleared DB with products successfully!");
+                syncCount();
             })
             .catch((error) => console.error(error));
     }

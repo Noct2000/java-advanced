@@ -42,6 +42,16 @@ public class ProductServiceImpl implements ProductService {
         return products.stream().map(productRepository::save).toList();
     }
 
+    @Override
+    public Integer getCountOfAllProducts() {
+        return productRepository.getCountOfAllProducts();
+    }
+
+    @Override
+    public void deleteAll() {
+        productRepository.deleteAll();
+    }
+
     private void mapProducts(
             ExternalSearchResponseDto externalSearchResponseDto,
             List<Product> products

@@ -7,4 +7,8 @@ public interface ProductService {
     List<Product> getProductsFromApi(String searchRequest);
 
     List<Product> saveProducts(List<Product> products);
+
+    Integer getCountOfAllProducts();
+
+    void deleteAll();
 }

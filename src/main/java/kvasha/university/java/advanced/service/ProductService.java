@@ -10,5 +10,7 @@ public interface ProductService {
 
     Integer getCountOfAllProducts();
 
+    List<Product> getAll();
+
     void deleteAll();
 }

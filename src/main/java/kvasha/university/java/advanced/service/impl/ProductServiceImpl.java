@@ -48,6 +48,11 @@ public class ProductServiceImpl implements ProductService {
     }
 
     @Override
+    public List<Product> getAll() {
+        return productRepository.findAll();
+    }
+
+    @Override
     public void deleteAll() {
         productRepository.deleteAll();
     }

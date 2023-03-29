@@ -29,3 +29,6 @@ PS: mvnw requires JAVA_HOME property in ENV
 ```shell
 java -jar java-advanced-h2.jar
 ```
+4) go to http://localhost:8080
+
+PS: it requires java 17
